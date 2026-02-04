@@ -81,7 +81,7 @@ exports.generateCheckoutSummary = async (userId, address, couponCode = null) => 
     }
   }
   if(subtotal <= 499){
-    subtotal += 39;
+    subtotal += 1;
   }
   const finalAmount = subtotal - discount;
 
