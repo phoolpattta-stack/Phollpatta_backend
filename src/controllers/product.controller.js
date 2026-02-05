@@ -147,8 +147,14 @@ exports.getAllProducts = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const category = req.query.category;
+    const search = req.query.search;
 
-    let filter = {}; // ❗ NO isActive filter
+    let filter = { isActive: true };
+
+    // ❗ NO isActive filter
+    if (search) {
+      filter.name = { $regex: search, $options: "i" };
+    }
 
     if (category) filter.category = category;
 
