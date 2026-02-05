@@ -97,7 +97,7 @@ app.set("trust proxy", 1);
 // ✅ PRODUCTION-READY CORS CONFIGURATION
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
   ? process.env.ALLOWED_ORIGINS.split(',') 
-  : ["http://localhost:3001", "http://localhost:3000","https://phoolpatta.com",  "https://www.phoolpatta.com"," phoolpatta-admin.vercel.app", "https://phoolpatta-admin-9blicikkw-phoolpattas-projects.vercel.app"];
+  : ["http://localhost:3001", "http://localhost:3000","https://phoolpatta.com",  "https://www.phoolpatta.com","phoolpatta-admin.vercel.app", "https://phoolpatta-admin-9blicikkw-phoolpattas-projects.vercel.app"];
 
 app.use(cors({
   origin: function (origin, callback) {
