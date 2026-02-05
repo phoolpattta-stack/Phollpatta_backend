@@ -711,7 +711,7 @@ exports.cancelCODOrder = async (req, res) => {
           {
             text: `Your COD order ${order._id} has been cancelled. No payment was charged.`,
             html,
-          }
+          },process.env.SMTP_FROM_ADMIN
         );
 
       const adminEmail = process.env.ADMIN_EMAIL_ORDER;
