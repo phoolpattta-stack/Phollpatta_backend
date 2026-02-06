@@ -6,11 +6,17 @@ const { authorize } = require("../middlewares/role.middleware");
 const upload = require("../utils/multer");
 
 const { createProduct, updateProduct,deleteProduct, toggleProductStatus } = require("../controllers/product.controller");
-const { getAllProducts, getProductById} = require("../controllers/product.controller");
+const { getAllProducts, getProductById, getAllProductsForAdmin } = require("../controllers/product.controller");
 
 
 // Public product routes (User)
 router.get("/", getAllProducts);
+router.get("/admin",
+  protect,
+  authorize("ADMIN"),
+  getAllProductsForAdmin
+);
+
 router.get("/:id", getProductById)
 
 //private route for admin only
