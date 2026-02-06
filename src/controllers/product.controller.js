@@ -100,45 +100,40 @@ exports.toggleProductStatus = async (req, res) => {
 
 
 /* =========================
-   GET ALL ACTIVE PRODUCTS
+   ADMIN : GET ALL ACTIVE PRODUCTS
 ========================= */
-// exports.getAllProducts = async (req, res) => {
-//   try {
-//     const page = Number(req.query.page) || 1;
-//     const limit = Number(req.query.limit) || 10;
-//     const skip = (page - 1) * limit;
+exports.getAllProductsForAdmin = async (req, res) => {
+  try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-//     const category = req.query.category;
-//     const search = req.query.search;
+    const category = req.query.category;
 
-//     let filter = { isActive: true };
+    let filter = {  };
 
-//     if (category) filter.category = category;
+    if (category) filter.category = category;
+    
+    const products = await Product.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
-//     if (search) {
-//       filter.name = { $regex: search, $options: "i" };
-//     }
+    const total = await Product.countDocuments(filter);
 
-//     const products = await Product.find(filter)
-//       .skip(skip)
-//       .limit(limit)
-//       .sort({ createdAt: -1 });
-
-//     const total = await Product.countDocuments(filter);
-
-//     res.json({
-//       total,
-//       page,
-//       limit,
-//       pages: Math.ceil(total / limit),
-//       products,
-//     });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+    res.json({
+      total,
+      page,
+      limit,
+      pages: Math.ceil(total / limit),
+      products,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 /* =========================
-   ADMIN: GET ALL PRODUCTS
+   USER: GET ALL PRODUCTS
 ========================= */
 exports.getAllProducts = async (req, res) => {
   try {
