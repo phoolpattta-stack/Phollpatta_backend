@@ -143,7 +143,7 @@ exports.getAllProductsForAdmin = async (req, res) => {
 
     let filter = {}; // ❗ No isActive filter
 
-    if (category) {
+      if (category && category !== "all") {
       filter.category = category;
     }
 
@@ -187,9 +187,8 @@ exports.getAllProducts = async (req, res) => {
       filter.name = { $regex: search, $options: "i" };
     }
 
-    if (category && category !== "all") {
-      filter.category = category;
-    }
+    if (category) filter.category = category;
+
 
     const products = await Product.find(filter)
       .skip(skip)
