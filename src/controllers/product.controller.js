@@ -187,7 +187,9 @@ exports.getAllProducts = async (req, res) => {
       filter.name = { $regex: search, $options: "i" };
     }
 
-    if (category) filter.category = category;
+    if (category && category !== "all") {
+      filter.category = category;
+    }
 
     const products = await Product.find(filter)
       .skip(skip)
