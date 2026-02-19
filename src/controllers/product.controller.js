@@ -102,18 +102,55 @@ exports.toggleProductStatus = async (req, res) => {
 /* =========================
    ADMIN : GET ALL ACTIVE PRODUCTS
 ========================= */
+// exports.getAllProductsForAdmin = async (req, res) => {
+//   try {
+//     const page = Number(req.query.page) || 1;
+//     const limit = Number(req.query.limit) || 10;
+//     const skip = (page - 1) * limit;
+
+//     const category = req.query.category;
+
+//     let filter = {  };
+
+//     if (category) filter.category = category;
+    
+//     const products = await Product.find(filter)
+//       .skip(skip)
+//       .limit(limit)
+//       .sort({ createdAt: -1 });
+
+//     const total = await Product.countDocuments(filter);
+
+//     res.json({
+//       total,
+//       page,
+//       limit,
+//       pages: Math.ceil(total / limit),
+//       products,
+//     });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
 exports.getAllProductsForAdmin = async (req, res) => {
   try {
     const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
+    const limit = Number(req.query.limit) || 50; // higher default for admin
     const skip = (page - 1) * limit;
 
     const category = req.query.category;
+    const search = req.query.search;
 
-    let filter = {  };
+    let filter = {}; // ❗ No isActive filter
 
-    if (category) filter.category = category;
-    
+    if (category) {
+      filter.category = category;
+    }
+
+    if (search) {
+      filter.name = { $regex: search, $options: "i" };
+    }
+
     const products = await Product.find(filter)
       .skip(skip)
       .limit(limit)
@@ -124,12 +161,12 @@ exports.getAllProductsForAdmin = async (req, res) => {
     res.json({
       total,
       page,
-      limit,
       pages: Math.ceil(total / limit),
       products,
     });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 /* =========================
@@ -146,7 +183,6 @@ exports.getAllProducts = async (req, res) => {
 
     let filter = { isActive: true };
 
-    // ❗ NO isActive filter
     if (search) {
       filter.name = { $regex: search, $options: "i" };
     }
