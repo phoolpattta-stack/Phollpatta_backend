@@ -30,6 +30,11 @@ exports.getDashboardStats = async (req, res) => {
       dateFilter.createdAt = { $gte: start };
     }
 
+     // ✅ Lifetime = no filter
+    if (range === "lifetime") {
+      dateFilter = {}; // fetch everything
+    }
+
     /* =========================
        ORDERS
     ========================= */
