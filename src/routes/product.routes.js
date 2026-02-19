@@ -10,12 +10,14 @@ const { getAllProducts, getProductById, getAllProductsForAdmin } = require("../c
 
 
 // Public product routes (User)
-router.get("/", getAllProducts);
 router.get("/admin",
   protect,
   authorize("ADMIN"),
   getAllProductsForAdmin
 );
+
+router.get("/", getAllProducts);
+
 
 router.get("/:id", getProductById)
 
